@@ -1,5 +1,7 @@
 export const SITE_URL = 'https://clworkersvite.pages.dev'
 
+export const ROBOTS_INDEX = 'index, follow, max-image-preview:large'
+
 export type SiteRoute = {
   path: string
   changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'

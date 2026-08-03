@@ -1,4 +1,21 @@
+# robots.txt for clworkersvite
+# Served as a static asset by Cloudflare Pages / Workers Static Assets.
+
+# Allow all crawlers to read the entire site.
 User-agent: *
 Allow: /
 
+# Explicit policies for the major search engines (all permissive).
+# The site has no private paths; if you add any, add Disallow rules here.
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+# Every page carries an explicit <meta name="robots"> and the 404 page is
+# marked noindex, so the sitemap below is the single source of truth.
 Sitemap: https://clworkersvite.pages.dev/sitemap.xml

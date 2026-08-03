@@ -2,13 +2,14 @@ import type { Child } from 'hono/jsx'
 import { html } from 'hono/html'
 import { css, cx, Style } from 'hono/css'
 import globalCss from '../styles/global.css?raw'
-import { canonicalUrl } from '../site'
+import { ROBOTS_INDEX, canonicalUrl } from '../site'
 
 type LayoutProps = {
   title: string
   description: string
   active: 'home' | 'about'
   path: string
+  robots?: string
   children: Child
 }
 
@@ -98,8 +99,9 @@ const footerText = css`
   font-size: 0.85rem;
 `
 
-export function Layout({ title, description, active, path, children }: LayoutProps) {
+export function Layout({ title, description, active, path, robots = ROBOTS_INDEX, children }: LayoutProps) {
   const year = new Date().getFullYear()
+  const canonical = canonicalUrl(path)
   return (
     <>
       {html`<!doctype html>`}
@@ -108,7 +110,10 @@ export function Layout({ title, description, active, path, children }: LayoutPro
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <meta name="description" content={description} />
-          <link rel="canonical" href={canonicalUrl(path)} />
+          <meta name="robots" content={robots} />
+          <link rel="canonical" href={canonical} />
+          <link rel="alternate" hreflang="en" href={canonical} />
+          <link rel="alternate" hreflang="x-default" href={canonical} />
           <meta property="og:title" content={title} />
           <meta property="og:description" content={description} />
           <meta property="og:type" content="website" />

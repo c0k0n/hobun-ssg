@@ -17,12 +17,15 @@ function sitemap(): Plugin {
           `    <lastmod>${today}</lastmod>`,
           `    <changefreq>${route.changefreq}</changefreq>`,
           `    <priority>${route.priority}</priority>`,
+          `    <xhtml:link rel="alternate" hreflang="en" href="${loc}"/>`,
+          `    <xhtml:link rel="alternate" hreflang="x-default" href="${loc}"/>`,
           '  </url>'
         ].join('\n')
       }).join('\n')
       const xml = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+        '        xmlns:xhtml="http://www.w3.org/1999/xhtml">',
         urls,
         '</urlset>',
         ''

@@ -26,4 +26,8 @@ export const securityHeaders: MiddlewareHandler = async (c, next) => {
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
   res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
   res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+  res.headers.set(
+    'X-Robots-Tag',
+    c.res.status === 404 ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'
+  )
 }

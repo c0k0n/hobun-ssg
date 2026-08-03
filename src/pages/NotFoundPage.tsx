@@ -9,6 +9,7 @@ export function NotFoundPage() {
       description="The page you are looking for does not exist."
       active="home"
       path="/404"
+      robots="noindex, nofollow"
     >
       <section class={cx(hero, 'container')}>
         <p class={eyebrow}>Error 404</p>
