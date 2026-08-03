@@ -8,6 +8,7 @@ export function NotFoundPage() {
       title="Page not found — clworkersvite"
       description="The page you are looking for does not exist."
       active="home"
+      path="/404"
     >
       <section class={cx(hero, 'container')}>
         <p class={eyebrow}>Error 404</p>

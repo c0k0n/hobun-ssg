@@ -9,6 +9,7 @@ export function AboutPage() {
       title="About — clworkersvite"
       description="How this static site is built with Hono, Vite, and Cloudflare."
       active="about"
+      path="/about"
     >
       <section class={cx(hero, 'container')}>
         <p class={eyebrow}>About</p>

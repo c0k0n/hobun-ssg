@@ -35,6 +35,12 @@ a {
   text-decoration: none;
 }
 
+/* Inline links inside text blocks need a non-color cue (axe: link-in-text-block) */
+p a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 ::selection {
   background: rgba(108, 140, 255, 0.35);
 }

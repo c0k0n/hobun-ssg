@@ -9,6 +9,7 @@ export function HomePage() {
       title="clworkersvite — Pure SSG"
       description="A static site pre-rendered from a Hono app and served on Cloudflare's edge."
       active="home"
+      path="/"
     >
       <section class={cx(hero, 'container')}>
         <p class={eyebrow}>Static Site Generation</p>
