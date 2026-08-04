@@ -1,18 +1,18 @@
 # clworkersvite — Pure SSG on Cloudflare
 
-A static site pre-rendered from a [Hono](https://hono.dev) app at build time, served from Cloudflare's edge via Cloudflare Pages. Bun only — no npm/npx/pnpm anywhere.
+A static site pre-rendered from a [Hono](https://hono.dev) app at build time, served from Cloudflare's edge via Cloudflare Pages. Bun only — no npm/npx/pnpm anywhere, no Vite, no bundler.
 
 ## How it works
 
 - `src/index.tsx` only wires routes; each page is a JSX component under `src/pages/` (`HomePage`, `AboutPage`, `NotFoundPage`), composed from `src/components/` (`Layout`, `Card`).
-- [`@hono/vite-ssg`](https://github.com/honojs/vite-plugins/tree/main/packages/ssg) runs the app through Hono's [`toSSG`](https://hono.dev/docs/helpers/ssg) during `vite build`, writing one real HTML file per route to `dist/`.
-- Dev mode (`bun run dev`) instead runs the app inside the Vite dev server via [`@hono/vite-dev-server`](https://github.com/honojs/vite-plugins/tree/main/packages/dev-server) (official Hono) — nothing is pre-rendered until you build.
+- [`scripts/build.ts`](scripts/build.ts) runs Hono's [`toSSG`](https://hono.dev/docs/helpers/ssg) via the native Bun adapter (`hono/bun`) during `bun run build`, writing one real HTML file per route to `dist/`. Bun transpiles the TSX itself — there is no compile step and no bundler in the pipeline.
+- Dev mode (`bun run dev`) is `NODE_ENV=development bun run --hot src/index.tsx`: Bun detects the Hono app's `fetch` and serves it, re-running the server on every file change. `bun run --hot` is *server-side* hot reload only (see [Bun's watch-mode docs](https://bun.com/docs/runtime/watch-mode.md)) — it does not push to the browser — so dev also gets a tiny built-in live reload: `Layout` injects a strict-CSP-compliant `<script src="/__dev/livereload.js">` (served as `'self'`, no inline code), which polls `/__dev/hash` (a sum of `src/` mtimes) and reloads the page ~400 ms after a save. Both routes exist only under `NODE_ENV=development`, so nothing dev-related ships in the build.
 - `bun run preview` serves the built `dist/` locally with `wrangler pages dev`, which reproduces the Pages deployment shape (real 404s, `_headers` applied).
-- Styling uses [`hono/css`](https://hono.dev/docs/helpers/css) (`css`, `cx`, `Style`): component styles are emitted once, scoped per page — each route only ships the CSS its components actually use (verified: `dist/404.html` includes only 404 styles). True globals (`:root` variables, reset, `body`, focus styles, `prefers-reduced-motion`) stay in `src/styles/global.css`, inlined once into every page. `public/` holds only the favicon, `_headers`, and `robots.txt`; zero extra requests at runtime.
+- Styling uses [`hono/css`](https://hono.dev/docs/helpers/css) (`css`, `cx`, `Style`): component styles are emitted once, scoped per page — each route only ships the CSS its components actually use (verified: `dist/404.html` includes only 404 styles). True globals (`:root` variables, reset, `body`, focus styles, `prefers-reduced-motion`) stay in `src/styles/global.css`, inlined once into every page. `public/` holds only the favicon and `_headers`; zero extra requests at runtime.
 - Pages are SEO/accessibility ready: doctype, `lang`, per-page `<title>` + meta description + meta `robots`, `rel="canonical"` and self-referencing `hreflang` alternates (en + x-default) built from `SITE_URL` in `src/site.ts`, Open Graph meta, a skip link, `<main>` landmark, nav list with `aria-current`, descriptive link text, `:focus-visible` styles, and in-text links are underlined (distinguishable without relying on color). The 404 page is marked `noindex`: Pages matches `_headers` rules against the *requested* URL, so it cannot target real unmatched paths — the `<meta name="robots" content="noindex, nofollow">` in `404.html` carries that; `X-Robots-Tag: noindex, nofollow` is layered on for direct `/404` + `/404.html` requests (via `_headers`) and for app-generated 404s in dev (via middleware).
-- `public/robots.txt` allows crawling, lists the sitemap, and documents the policies; `sitemap.xml` is emitted into `dist/` by a small Vite plugin (`sitemap()` in `vite.config.ts`) from `src/site.ts` on every build — with `lastmod`, `changefreq`, `priority`, and `xhtml:link` hreflang alternates — so it stays in sync with your routes.
+- `robots.txt` and `sitemap.xml` are **app routes** (`/robots.txt`, `/sitemap.xml` in `src/index.tsx`, content built from `src/site.ts`) — so dev serves them exactly like production, and `toSSG` pre-renders both into `dist/` on every build, keeping them in sync with your routes (sitemap carries `lastmod`, `changefreq`, `priority`, and `xhtml:link` hreflang alternates).
 - 404 handling is layered: `/404` pre-renders `dist/404.html` (Pages serves it for any unmatched path), and `app.notFound` returns the same styled page from the Hono app when a path matches nothing in dev or preview — verified `404` status in dev and `bun run preview`.
-- Security headers (CSP with Trusted Types, HSTS, COOP, COEP, CORP, X-Frame-Options, `nosniff`, Referrer-Policy, Permissions-Policy, X-Permitted-Cross-Domain-Policies, X-DNS-Prefetch-Control) are applied twice: statically via `public/_headers` for every asset served by Pages, and via Hono's [`secureHeaders` middleware](https://hono.dev/docs/middleware/builtin/secure-headers) in `src/security.ts` for responses generated by the app (dev + the 404 page). Both sources stay in sync — the middleware disables Hono's legacy defaults (`X-XSS-Protection`, `X-Download-Options`, `origin-agent-cluster`) so dev responses carry exactly the headers `_headers` defines. One deliberate exception: `script-src` gains `'unsafe-inline'` **in dev only** (`import.meta.env.DEV`), because Vite injects the HMR bootstrap as an inline `<script>` tag — the strict CSP would otherwise silently kill hot reload. Production (`_headers` + SSG output) is always strict. `X-Robots-Tag` is crawler guidance, not a security header, and is therefore not in the sync set.
+- Security headers (CSP with Trusted Types, HSTS, COOP, COEP, CORP, X-Frame-Options, `nosniff`, Referrer-Policy, Permissions-Policy, X-Permitted-Cross-Domain-Policies, X-DNS-Prefetch-Control) are applied twice: statically via `public/_headers` for every asset served by Pages, and via Hono's [`secureHeaders` middleware](https://hono.dev/docs/middleware/builtin/secure-headers) in `src/security.ts` for responses generated by the app (dev + the 404 page). Both sources stay in sync — the middleware disables Hono's legacy defaults (`X-XSS-Protection`, `X-Download-Options`, `origin-agent-cluster`) so dev responses carry exactly the headers `_headers` defines. The CSP is strict in every environment (no `'unsafe-inline'` for scripts): there is no bundler injecting inline bootstrap scripts, so there is nothing to exempt. `X-Robots-Tag` is crawler guidance, not a security header, and is therefore not in the sync set.
 
 ## Deploying
 
@@ -21,33 +21,28 @@ Deployment is handled by Cloudflare Pages' Git integration (no wrangler involved
 - In the dashboard: **Workers & Pages > Create application > Pages > Connect to Git**, then set the **build command** to `bun run build` and the **output directory** to `dist`. Pages natively supports `_headers` and the `404.html` custom-404 page.
 - Locally, `bun run preview` (`wrangler pages dev dist`) reproduces that shape: `_headers` applied and `404.html` served for unmatched paths.
 
-## Why is @hono/vite-dev-server in the dependencies?
-
-It is **dev-only** — it never runs in the build or at deploy time. It exists solely so `bun run dev` serves your Hono app inside the Vite dev server with HMR (it runs the app in Node via `@hono/node-server`), matching what you'd see in production (including the 404 page above). Remove it and `vite` dev has nothing to serve (there's no `index.html` until you build — the plugin is what wires `src/index.tsx` into the Vite dev server). If you'd rather have zero framework plugins, just use `bun run build && bun run preview` as your loop — but you lose hot reload.
-
 ## What was removed, and why
 
-This project started with the `create-cloudflare` Workers template (`@cloudflare/vite-plugin`, `wrangler.jsonc`, `cf-typegen`, `worker-configuration.d.ts`). None of that is needed for a static site deployed to Pages:
+This project started with the `create-cloudflare` Workers template and a Vite-based pipeline. None of it is needed for a static site deployed to Pages:
 
-- **`@cloudflare/vite-plugin`** — its job is to run *Worker* code in workerd during dev (bindings, runtime APIs, `vite preview` in the Workers runtime; see the [official docs](https://developers.cloudflare.com/workers/vite-plugin/)). This site is pure static SSG: `@hono/vite-ssg` pre-renders at build time and `@hono/vite-dev-server` covers the dev loop. Removing it loses nothing except workerd-in-dev, which is meaningless without bindings.
-- **`wrangler.jsonc`** — only used by `wrangler dev`/`wrangler deploy`. Deployment here is Pages Git integration (build command `bun run build`, output `dist`), and `wrangler pages dev dist` runs without any config file.
-- **`cf-typegen` + `worker-configuration.d.ts`** — `wrangler types` generates types for Worker *bindings* (KV, D1, R2, secrets…). This project has none, so there is nothing to type; Web API types come from TypeScript's DOM lib (added `DOM`/`DOM.Iterable` to `tsconfig.json`).
-- **`wrangler`** — kept only for `bun run preview` (`wrangler pages dev dist`). It is the only tool that reproduces the Pages shape locally (`_headers` applied, `404.html` served for unmatched paths). Everything else — install, dev, build, typecheck — is bun/vite/hono.
-
-If you ever add bindings or move to Workers, `wrangler` + `wrangler.jsonc` + `cf-typegen` return; until then they're dead weight.
+- **`vite`** — its job is dev server + client bundling (HMR, code splitting, asset hashing). This site has zero client-side JavaScript: every byte is pre-rendered HTML with inline CSS. There is nothing for a bundler to do, and keeping Vite 8 (Rolldown-based) meant depending on plugins built against the pre-Rolldown plugin API — a compatibility risk that fails silently.
+- **`@hono/vite-ssg`** — a thin Vite plugin that runs `toSSG` inside `vite build` so TSX gets compiled. Hono ships a native Bun adapter: `toSSG(app)` from `hono/bun` runs on Bun's own filesystem, and Bun transpiles the TSX at runtime. `scripts/build.ts` is the whole build system.
+- **`@hono/vite-dev-server`** — ran the Hono app inside the Vite dev server with HMR. Bun does that natively: `bun run --hot` re-runs the app on file changes, plus a tiny strict-CSP-compliant live reload for the browser (see above). The old setup needed `'unsafe-inline'` in the dev CSP just to let Vite's HMR bootstrap script run — a silent-failure vector that no longer exists.
+- **`@cloudflare/vite-plugin`, `wrangler.jsonc`, `cf-typegen`, `worker-configuration.d.ts`** — all bindings/runtime machinery from the Workers template; this site has no bindings. `wrangler` stays, but only for `bun run preview` (`wrangler pages dev dist`) — it is the only tool that reproduces the Pages shape locally.
+- **`bun --bun run build`** (the old build-hang workaround) — gone with Vite. `bun run build` now runs `scripts/build.ts` on the Bun runtime directly; there is no internal server and nothing to hang.
 
 ## Commands
 
 ```sh
 bun install            # install dependencies
-bun run dev            # Hono app inside the Vite dev server (HMR)
-bun run build          # pre-render all routes to static HTML in dist/
+bun run dev            # Hono app served by Bun, server hot-reloaded + page auto-refresh on save
+bun run build          # pre-render all routes (pages, robots.txt, sitemap.xml) to static files in dist/
+bun test               # run the app tests (bun:test + Hono's app.request, no extra deps)
+bun run typecheck      # tsc --noEmit
 bun run preview        # serve the built dist/ with Pages semantics (real 404s, _headers applied)
 ```
 
-> `bun run preview` intentionally uses `wrangler pages dev`, not `vite preview`: Vite's preview server is a plain static file server that returns an empty `404` body and ignores `_headers`/`404.html`, so it would silently hide both the custom 404 page and the security headers. `wrangler pages dev` runs the actual Pages shape (assets + `_headers` + `404.html` fallback) locally.
-
-> `vite` and `wrangler` are executed through bun's script runner. Do **not** add the `--bun` flag: forcing the Bun runtime on `vite build` makes `@hono/vite-ssg`'s internal server never close its WebSocket handle, so the process hangs.
+> `bun run preview` intentionally uses `wrangler pages dev`, not a plain static server: it runs the actual Pages shape (assets + `_headers` + `404.html` fallback) locally.
 
 ## Adding a page
 
@@ -70,7 +65,3 @@ app.get('/about', (c) => {
 ```
 
 Build and you'll get `dist/about.html`. For dynamic routes use `ssgParams`; for routes you don't want pre-rendered use `disableSSG` (see [Hono SSG docs](https://hono.dev/docs/helpers/ssg)).
-
-## Why was the build "stuck"?
-
-`bun --bun run build` (previously used by `preview`/`deploy`) forces vite onto the Bun runtime. The `@hono/vite-ssg` plugin starts an internal Vite server to run your app and never closes its WebSocket under Bun, so the process hangs after the files are written. Removing `--bun` fixes it — bun still installs everything and runs every script.

@@ -2,7 +2,8 @@ import type { Child } from 'hono/jsx'
 import { html } from 'hono/html'
 import { css, cx, Style } from 'hono/css'
 import globalCss from '../styles/global.css?raw'
-import { ROBOTS_INDEX, canonicalUrl } from '../site'
+import { grad } from '../styles/shared'
+import { isDev, ROBOTS_INDEX, canonicalUrl } from '../site'
 
 type LayoutProps = {
   title: string
@@ -33,13 +34,6 @@ const brand = css`
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--text);
-`
-
-const brandAccent = css`
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 `
 
 const navList = css`
@@ -121,6 +115,8 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           <title>{title}</title>
           <style>{globalCss}</style>
           <Style />
+          {isDev &&
+            html`<script src="/__dev/livereload.js" defer></script>`}
         </head>
         <body>
           <a class={skipLink} href="#main">
@@ -129,7 +125,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           <header class={header}>
             <div class={cx('container', headerInner)}>
               <a class={brand} href="/">
-                clworkers<span class={brandAccent}>vite</span>
+                clworkers<span class={grad}>vite</span>
               </a>
               <nav aria-label="Primary">
                 <ul class={navList}>

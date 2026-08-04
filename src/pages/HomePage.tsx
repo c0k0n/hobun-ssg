@@ -27,7 +27,7 @@ export function HomePage() {
             <code>toSSG</code> walks your routes at build time and writes one real HTML file per page.
           </p>
         </Card>
-        <Card title="Vite bundles">
+        <Card title="CSS scoped">
           <p>
             Styles are scoped per page with <code>hono/css</code> and only included where they are used.
           </p>

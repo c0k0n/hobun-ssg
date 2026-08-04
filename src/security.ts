@@ -1,13 +1,6 @@
 import type { MiddlewareHandler } from 'hono'
 import { secureHeaders } from 'hono/secure-headers'
 
-// Dev only: Vite injects the HMR bootstrap as an inline
-// <script>import("/@vite/client")</script> tag; the strict production CSP
-// would block it (silently killing hot reload). 'unsafe-inline' must never
-// leak into production: the SSG build and public/_headers keep the strict
-// value, and this middleware only runs in the Vite dev server.
-const isDev = import.meta.env?.DEV ?? false
-
 // Content-Security-Policy as configured by `secureHeaders` below. Kept as a
 // constant so public/_headers (static assets on Pages) stays in sync with the
 // middleware (app-generated responses: dev + the 404 page).
@@ -68,7 +61,7 @@ export const securityHeaders: MiddlewareHandler = secureHeaders({
   },
   contentSecurityPolicy: {
     defaultSrc: ["'self'"],
-    scriptSrc: isDev ? ["'self'", "'unsafe-inline'"] : ["'self'"],
+    scriptSrc: ["'self'"],
     scriptSrcAttr: ["'none'"],
     styleSrc: ["'self'", "'unsafe-inline'"],
     imgSrc: ["'self'", 'data:'],
