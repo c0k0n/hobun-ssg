@@ -1,5 +1,5 @@
 # robots.txt for clworkersvite
-# Served as a static asset by Cloudflare Pages / Workers Static Assets.
+# Served as a static asset by Cloudflare Pages.
 
 # Allow all crawlers to read the entire site.
 User-agent: *

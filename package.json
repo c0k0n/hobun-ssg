@@ -5,15 +5,13 @@
     "dev": "vite",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "preview": "wrangler dev",
-    "deploy": "bun run build && wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+    "preview": "wrangler pages dev dist"
   },
   "dependencies": {
-    "hono": "^4.12.34"
+    "hono": "^4.13.0"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.50.0",
+    "@hono/vite-dev-server": "^0.26.1",
     "@hono/vite-ssg": "^0.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.2.0",

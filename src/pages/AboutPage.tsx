@@ -27,9 +27,9 @@ export function AboutPage() {
             The official Vite plugin that runs <code>toSSG</code> as part of <code>vite build</code>.
           </p>
         </Card>
-        <Card title="Workers Static Assets">
+        <Card title="Cloudflare Pages">
           <p>
-            <code>wrangler deploy</code> uploads <code>dist/</code> to Cloudflare&rsquo;s edge CDN.
+            The Git integration builds <code>dist/</code> and serves it from Cloudflare&rsquo;s edge CDN.
           </p>
         </Card>
       </section>

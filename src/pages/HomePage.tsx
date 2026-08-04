@@ -16,7 +16,7 @@ export function HomePage() {
         <h1 class={title}>
           Hello! This page was pre-rendered to <span class={grad}>static HTML</span> at build time.
         </h1>
-        <p class={lead}>No server-side code runs when you visit — just files on Cloudflare's edge, worldwide.</p>
+        <p class={lead}>No server-side code runs when you visit — just files on Cloudflare's edge, planetwide.</p>
         <a class={btn} href="/about">
           Read how this site is built
         </a>

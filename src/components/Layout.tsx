@@ -126,7 +126,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           <a class={skipLink} href="#main">
             Skip to main content
           </a>
-          <header>
+          <header class={header}>
             <div class={cx('container', headerInner)}>
               <a class={brand} href="/">
                 clworkers<span class={brandAccent}>vite</span>
@@ -148,7 +148,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
             </div>
           </header>
           <main id="main">{children}</main>
-          <footer>
+          <footer class={footer}>
             <div class="container">
               <p class={footerText}>
                 &copy; {year} clworkersvite &middot; <a href="https://hono.dev">Visit the Hono website</a>

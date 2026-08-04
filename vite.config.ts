@@ -1,7 +1,7 @@
-import { cloudflare } from '@cloudflare/vite-plugin'
+import devServer from '@hono/vite-dev-server'
 import ssg from '@hono/vite-ssg'
 import { defineConfig, type Plugin } from 'vite'
-import { SITE_URL, ROUTES, canonicalUrl } from './src/site'
+import { ROUTES, canonicalUrl } from './src/site.ts'
 
 function sitemap(): Plugin {
   return {
@@ -43,8 +43,9 @@ export default defineConfig(({ command, isPreview }) => ({
     isPreview ? null : ssg(),
     // Emits dist/sitemap.xml from src/site.ts after every production build.
     sitemap(),
-    // Dev only: serves the Hono app live in workerd with HMR. Disabled for
-    // build (SSG handles it) and preview (use `bun run preview` -> wrangler dev).
-    command === 'serve' && !isPreview ? cloudflare() : null
+    // Dev only: runs the Hono app inside the Vite dev server with HMR.
+    // Disabled for build (SSG handles it) and preview (use `bun run preview`
+    // -> `wrangler pages dev dist`, which serves the real Pages shape).
+    command === 'serve' && !isPreview ? devServer({ entry: 'src/index.tsx' }) : null
   ]
 }))

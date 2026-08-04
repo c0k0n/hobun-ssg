@@ -1,5 +1,16 @@
 import type { MiddlewareHandler } from 'hono'
+import { secureHeaders } from 'hono/secure-headers'
 
+// Dev only: Vite injects the HMR bootstrap as an inline
+// <script>import("/@vite/client")</script> tag; the strict production CSP
+// would block it (silently killing hot reload). 'unsafe-inline' must never
+// leak into production: the SSG build and public/_headers keep the strict
+// value, and this middleware only runs in the Vite dev server.
+const isDev = import.meta.env?.DEV ?? false
+
+// Content-Security-Policy as configured by `secureHeaders` below. Kept as a
+// constant so public/_headers (static assets on Pages) stays in sync with the
+// middleware (app-generated responses: dev + the 404 page).
 export const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "script-src 'self'",
@@ -16,18 +27,68 @@ export const CONTENT_SECURITY_POLICY = [
   "require-trusted-types-for 'script'",
 ].join('; ')
 
-export const securityHeaders: MiddlewareHandler = async (c, next) => {
+// Hono's official secure-headers middleware. Values follow the security
+// headers guide; CSP keeps the stricter directive set (inline styles require
+// style-src 'unsafe-inline'). The three deprecated/legacy defaults Hono ships
+// (origin-agent-cluster, X-Download-Options, X-XSS-Protection) are disabled so
+// dev responses carry exactly the headers public/_headers defines for Pages.
+export const securityHeaders: MiddlewareHandler = secureHeaders({
+  strictTransportSecurity: 'max-age=63072000; includeSubDomains',
+  xFrameOptions: 'DENY',
+  crossOriginEmbedderPolicy: 'require-corp',
+  referrerPolicy: 'no-referrer',
+  originAgentCluster: false,
+  xDownloadOptions: false,
+  xXssProtection: false,
+  permissionsPolicy: {
+    accelerometer: [],
+    ambientLightSensor: [],
+    autoplay: [],
+    battery: [],
+    camera: [],
+    crossOriginIsolated: [],
+    displayCapture: [],
+    encryptedMedia: [],
+    fullscreen: [],
+    geolocation: [],
+    gyroscope: [],
+    keyboardMap: [],
+    magnetometer: [],
+    microphone: [],
+    midi: [],
+    payment: [],
+    pictureInPicture: [],
+    publickeyCredentialsGet: [],
+    screenWakeLock: [],
+    serial: [],
+    syncXhr: [],
+    usb: [],
+    webShare: [],
+    xrSpatialTracking: [],
+  },
+  contentSecurityPolicy: {
+    defaultSrc: ["'self'"],
+    scriptSrc: isDev ? ["'self'", "'unsafe-inline'"] : ["'self'"],
+    scriptSrcAttr: ["'none'"],
+    styleSrc: ["'self'", "'unsafe-inline'"],
+    imgSrc: ["'self'", 'data:'],
+    fontSrc: ["'self'"],
+    connectSrc: ["'self'"],
+    objectSrc: ["'none'"],
+    baseUri: ["'self'"],
+    formAction: ["'self'"],
+    frameAncestors: ["'none'"],
+    upgradeInsecureRequests: [],
+    requireTrustedTypesFor: ["'script'"],
+  },
+})
+
+// Crawler guidance for app-generated responses. Only 404s are marked, to
+// match Pages, where normal pages carry no X-Robots-Tag (see public/_headers):
+// the noindex <meta> on the 404 page covers real unmatched-path 404s there.
+export const robotsTag: MiddlewareHandler = async (c, next) => {
   await next()
-  const res = c.res
-  res.headers.set('Content-Security-Policy', CONTENT_SECURITY_POLICY)
-  res.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload')
-  res.headers.set('X-Content-Type-Options', 'nosniff')
-  res.headers.set('X-Frame-Options', 'DENY')
-  res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-  res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
-  res.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
-  res.headers.set(
-    'X-Robots-Tag',
-    c.res.status === 404 ? 'noindex, nofollow' : 'index, follow, max-image-preview:large'
-  )
+  if (c.res.status === 404) {
+    c.res.headers.set('X-Robots-Tag', 'noindex, nofollow')
+  }
 }

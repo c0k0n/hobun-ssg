@@ -2,11 +2,11 @@ import { Hono } from 'hono'
 import { HomePage } from './pages/HomePage'
 import { AboutPage } from './pages/AboutPage'
 import { NotFoundPage } from './pages/NotFoundPage'
-import { securityHeaders } from './security'
+import { securityHeaders, robotsTag } from './security'
 
 const app = new Hono()
 
-app.use('*', securityHeaders)
+app.use('*', securityHeaders, robotsTag)
 
 app.get('/', (c) => {
   return c.html(<HomePage />)

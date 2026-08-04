@@ -1,21 +1,28 @@
 # Security headers for every static response.
-# Works with Cloudflare Workers Static Assets, Cloudflare Pages, and the
-# Cloudflare Vite plugin (dev/preview). Must stay in sync with
-# src/security.ts, which covers Worker-generated responses (the 404 page).
+# Works with Cloudflare Pages and Workers Static Assets.
+# Must stay in sync with src/security.ts, which covers app-generated
+# responses (the 404 page).
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'
-  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
-  Referrer-Policy: strict-origin-when-cross-origin
+  Referrer-Policy: no-referrer
+  Cross-Origin-Embedder-Policy: require-corp
   Cross-Origin-Opener-Policy: same-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  X-Robots-Tag: index, follow, max-image-preview:large
+  Cross-Origin-Resource-Policy: same-origin
+  X-Permitted-Cross-Domain-Policies: none
+  X-DNS-Prefetch-Control: off
+  Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()
+
+# No X-Robots-Tag on the wildcard rule: Pages applies it to real 404
+# responses too (matched against the requested URL), which would contradict
+# the noindex <meta> on the 404 page. Unmatched paths are marked noindex by
+# the meta tag alone; the rules below only match direct /404 and /404.html
+# requests.
 
 /404
-  ! X-Robots-Tag
   X-Robots-Tag: noindex, nofollow
 
 /404.html
-  ! X-Robots-Tag
   X-Robots-Tag: noindex, nofollow
