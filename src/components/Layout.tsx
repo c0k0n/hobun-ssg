@@ -1,14 +1,14 @@
 import type { Child } from 'hono/jsx'
 import { html } from 'hono/html'
 import { css, cx, Style } from 'hono/css'
-import globalCss from '../styles/global.css?raw'
+import globalCss from '../styles/global.css' with { type: 'text' }
 import { grad } from '../styles/shared'
 import { isDev, ROBOTS_INDEX, canonicalUrl } from '../site'
 
 type LayoutProps = {
   title: string
   description: string
-  active: 'home' | 'about'
+  active?: 'home' | 'about'
   path: string
   robots?: string
   children: Child
@@ -17,9 +17,10 @@ type LayoutProps = {
 const header = css`
   position: sticky;
   top: 0;
-  backdrop-filter: blur(10px);
-  background: rgba(11, 13, 18, 0.72);
+  backdrop-filter: blur(12px);
+  background: rgba(13, 14, 18, 0.78);
   border-bottom: 1px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   z-index: 10;
 `
 
@@ -27,12 +28,13 @@ const headerInner = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 14px;
+  padding-block: 16px;
 `
 
 const brand = css`
   font-weight: 700;
   letter-spacing: -0.02em;
+  font-size: 1.05rem;
   color: var(--text);
 `
 
@@ -46,15 +48,19 @@ const navList = css`
 const navLink = css`
   display: inline-block;
   color: var(--muted);
-  padding: 6px 12px;
+  padding: 7px 13px;
   border-radius: 8px;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   transition: color 0.15s ease, background 0.15s ease;
 
-  &:hover,
-  &[aria-current='page'] {
+  &:hover {
     color: var(--text);
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &[aria-current='page'] {
+    color: var(--accent);
   }
 `
 
@@ -68,9 +74,9 @@ const skipLink = css`
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
-  border-radius: 0 0 8px 0;
+  border-radius: 0 0 10px 0;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-weight: 600;
   z-index: 100;
 
@@ -85,7 +91,7 @@ const skipLink = css`
 
 const footer = css`
   border-top: 1px solid var(--border);
-  padding-block: 22px;
+  padding-block: 26px;
 `
 
 const footerText = css`
@@ -103,6 +109,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta name="theme-color" content="#0d0e12" />
           <meta name="description" content={description} />
           <meta name="robots" content={robots} />
           <link rel="canonical" href={canonical} />
@@ -111,6 +118,8 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           <meta property="og:title" content={title} />
           <meta property="og:description" content={description} />
           <meta property="og:type" content="website" />
+          <meta property="og:url" content={canonical} />
+          <meta property="og:site_name" content="clworkersvite" />
           <link rel="icon" href="/favicon.ico" />
           <title>{title}</title>
           <style>{globalCss}</style>
@@ -124,9 +133,9 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           </a>
           <header class={header}>
             <div class={cx('container', headerInner)}>
-              <a class={brand} href="/">
-                clworkers<span class={grad}>vite</span>
-              </a>
+          <a class={brand} href="/" translate="no">
+            clworkers<span class={grad}>vite</span>
+          </a>
               <nav aria-label="Primary">
                 <ul class={navList}>
                   <li>
@@ -143,13 +152,13 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
               </nav>
             </div>
           </header>
-          <main id="main">{children}</main>
+          {/* tabindex=-1 makes the skip link move focus in Safari too; the
+              focus ring is suppressed on main in global.css. */}
+          <main id="main" tabindex={-1}>{children}</main>
           <footer class={footer}>
-            <div class="container">
-              <p class={footerText}>
-                &copy; {year} clworkersvite &middot; <a href="https://hono.dev">Visit the Hono website</a>
-              </p>
-            </div>
+            <p class={cx('container', footerText)}>
+              &copy; {year} clworkersvite &middot; <a href="https://hono.dev">Visit the Hono website</a>
+            </p>
           </footer>
         </body>
       </html>

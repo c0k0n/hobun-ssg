@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'bun:test'
 import app from './index.tsx'
+import { ROUTES } from './site'
 
 // Run with `bun test`. Uses Hono's app.request() and Bun's test runner —
-// no extra dependencies. NODE_ENV is unset here, so the app is in
+// no extra dependencies. bun test sets NODE_ENV=test, so the app is in
 // production shape: dev-only routes (/__dev/*) must not be registered.
 
 describe('routes', () => {
@@ -28,6 +29,13 @@ describe('routes', () => {
     const res = await app.request('http://localhost/does-not-exist')
     expect(res.status).toBe(404)
     expect(await res.text()).toContain('Page not found')
+  })
+
+  test('every sitemap route is served by the app', async () => {
+    for (const route of ROUTES) {
+      const res = await app.request(`http://localhost${route.path}`)
+      expect(res.status).toBe(200)
+    }
   })
 
   test('HEAD behaves like GET without a body', async () => {

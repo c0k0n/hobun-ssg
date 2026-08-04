@@ -25,7 +25,7 @@ app.get('/404', (c) => {
 // Crawler-facing files are app routes so dev serves them exactly like
 // production. toSSG pre-renders both into dist/ at build time.
 app.get('/robots.txt', (c) => {
-  return c.text(ROBOTS_TXT, 200, { 'Content-Type': 'text/plain; charset=utf-8' })
+  return c.text(ROBOTS_TXT)
 })
 
 app.get('/sitemap.xml', (c) => {

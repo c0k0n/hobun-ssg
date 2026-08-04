@@ -10,11 +10,22 @@ const card = css`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  padding: 26px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+
+  & p {
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+
+  & p + p {
+    margin-top: 8px;
+  }
 
   &:hover {
-    border-color: rgba(108, 140, 255, 0.45);
+    border-color: rgba(216, 178, 106, 0.35);
+    background: var(--surface-2);
     transform: translateY(-2px);
   }
 `
@@ -22,19 +33,15 @@ const card = css`
 const cardTitle = css`
   font-size: 1.02rem;
   letter-spacing: -0.01em;
-  margin-bottom: 8px;
-`
-
-const cardBody = css`
-  color: var(--muted);
-  font-size: 0.92rem;
+  font-weight: 600;
+  margin-bottom: 10px;
 `
 
 export function Card({ title, children }: CardProps) {
   return (
     <article class={card}>
       <h2 class={cardTitle}>{title}</h2>
-      <div class={cardBody}>{children}</div>
+      {children}
     </article>
   )
 }

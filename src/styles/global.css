@@ -1,13 +1,17 @@
 :root {
   color-scheme: dark;
-  --bg: #0b0d12;
-  --surface: #13161f;
-  --text: #e8eaf0;
-  --muted: #98a1b3;
-  --border: #232936;
-  --accent: #6c8cff;
-  --accent-2: #b18cff;
-  --radius: 14px;
+  --bg: #0d0e12;
+  --surface: #14161c;
+  --surface-2: #1a1d25;
+  --text: #e8e6e1;
+  --muted: #9aa0ab;
+  --border: #252a33;
+  --accent: #d8b26a;
+  --accent-2: #ecd3a0;
+  --on-accent: #1a150c;
+  --radius: 12px;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 }
 
 * {
@@ -17,14 +21,15 @@
 
 body {
   background:
-    radial-gradient(1100px 500px at 85% -10%, rgba(108, 140, 255, 0.14), transparent 60%),
-    radial-gradient(900px 420px at -10% 0%, rgba(177, 140, 255, 0.1), transparent 55%),
+    radial-gradient(1000px 480px at 88% -12%, rgba(216, 178, 106, 0.07), transparent 60%),
+    radial-gradient(760px 400px at -10% 0%, rgba(255, 255, 255, 0.028), transparent 55%),
     var(--bg);
   color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -38,11 +43,17 @@ a {
 /* Inline links inside text blocks need a non-color cue (axe: link-in-text-block) */
 p a {
   text-decoration: underline;
+  text-decoration-color: rgba(216, 178, 106, 0.4);
   text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
+}
+
+p a:hover {
+  text-decoration-color: var(--accent);
 }
 
 ::selection {
-  background: rgba(108, 140, 255, 0.35);
+  background: rgba(216, 178, 106, 0.28);
 }
 
 :focus-visible {
@@ -50,8 +61,20 @@ p a {
   outline-offset: 2px;
 }
 
+/* The skip link moves focus to <main> (tabindex="-1"); a ring around the
+   whole page would be noise, not a cue (axe: skip-link). */
+main:focus-visible {
+  outline: none;
+}
+
+/* Remove the double-tap zoom delay on mobile taps (WCAG 2.5.8 / tap targets). */
+a,
+button {
+  touch-action: manipulation;
+}
+
 .container {
-  width: min(720px, 92vw);
+  width: min(760px, 92vw);
   margin-inline: auto;
 }
 

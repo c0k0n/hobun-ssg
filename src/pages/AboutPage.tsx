@@ -7,7 +7,7 @@ export function AboutPage() {
   return (
     <Layout
       title="About — clworkersvite"
-      description="How this static site is built with Hono, Vite, and Cloudflare."
+      description="How this static site is built with Hono, Bun, and Cloudflare."
       active="about"
       path="/about"
     >
@@ -22,9 +22,9 @@ export function AboutPage() {
             Pages are written as JSX components and rendered server-side during the build.
           </p>
         </Card>
-        <Card title="@hono/vite-ssg">
+        <Card title="Bun runtime">
           <p>
-            The official Vite plugin that runs <code>toSSG</code> as part of <code>vite build</code>.
+            Bun transpiles the JSX and runs <code>toSSG</code> during <code>bun run build</code> — no bundler involved.
           </p>
         </Card>
         <Card title="Cloudflare Pages">

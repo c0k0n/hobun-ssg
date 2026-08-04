@@ -1,6 +1,6 @@
-// Bun supports Vite-style `?raw` imports natively (file contents as a
-// string). Previously these declarations came from the vite/client types.
-declare module '*?raw' {
+// Bun imports text files (CSS here) with the `with { type: 'text' }` import
+// attribute, the documented replacement for Vite-style `?raw` imports.
+declare module '*.css' {
   const content: string
   export default content
 }

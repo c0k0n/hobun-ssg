@@ -7,7 +7,6 @@ export function NotFoundPage() {
     <Layout
       title="Page not found — clworkersvite"
       description="The page you are looking for does not exist."
-      active="home"
       path="/404"
       robots="noindex, nofollow"
     >
