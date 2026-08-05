@@ -34,10 +34,11 @@ export const securityHeaders: MiddlewareHandler = secureHeaders({
   xDownloadOptions: false,
   xXssProtection: false,
   permissionsPolicy: {
+    // ambient-light-sensor and battery are intentionally absent: Chrome no
+    // longer recognizes them (the underlying APIs were removed/flag-gated),
+    // and listing them logs "Unrecognized feature" warnings in the console.
     accelerometer: [],
-    ambientLightSensor: [],
     autoplay: [],
-    battery: [],
     camera: [],
     crossOriginIsolated: [],
     displayCapture: [],

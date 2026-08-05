@@ -1,7 +1,9 @@
 # Security headers for every static response.
 # Works with Cloudflare Pages and Workers Static Assets.
 # Must stay in sync with src/security.ts, which covers app-generated
-# responses (the 404 page).
+# responses (the 404 page). ambient-light-sensor and battery are absent from
+# the Permissions-Policy on purpose: Chrome no longer recognizes them, so
+# listing them logs "Unrecognized feature" warnings in the console.
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'
   Strict-Transport-Security: max-age=63072000; includeSubDomains
@@ -13,7 +15,7 @@
   Cross-Origin-Resource-Policy: same-origin
   X-Permitted-Cross-Domain-Policies: none
   X-DNS-Prefetch-Control: off
-  Permissions-Policy: accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), cross-origin-isolated=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()
+  Permissions-Policy: accelerometer=(), autoplay=(), camera=(), cross-origin-isolated=(), display-capture=(), encrypted-media=(), fullscreen=(), geolocation=(), gyroscope=(), keyboard-map=(), magnetometer=(), microphone=(), midi=(), payment=(), picture-in-picture=(), publickey-credentials-get=(), screen-wake-lock=(), serial=(), sync-xhr=(), usb=(), web-share=(), xr-spatial-tracking=()
 
 # No X-Robots-Tag on the wildcard rule: Pages applies it to real 404
 # responses too (matched against the requested URL), which would contradict
