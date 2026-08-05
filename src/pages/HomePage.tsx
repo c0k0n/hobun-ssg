@@ -53,6 +53,9 @@ export function HomePage() {
           <a class={btnGhost} href="/how-it-works">
             How it works
           </a>
+          <a class={btnGhost} href="https://github.com/c0k0n/hobun-ssg" target="_blank" rel="noreferrer">
+            See the code
+          </a>
         </div>
       </section>
       <section class={cx(section, 'container')} aria-label="What you will find here">

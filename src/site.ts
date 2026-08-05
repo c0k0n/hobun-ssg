@@ -28,8 +28,6 @@ Allow: /
 User-agent: DuckDuckBot
 Allow: /
 
-# Every page carries an explicit <meta name="robots"> and the 404 page is
-# marked noindex, so the sitemap below is the single source of truth.
 Sitemap: ${SITE_URL}/sitemap.xml
 `
 
@@ -48,7 +46,7 @@ export const ROUTES: SiteRoute[] = [
 ]
 
 export function canonicalUrl(path: string): string {
-  return `${SITE_URL}${path === '/' ? '/' : path}`
+  return new URL(path, SITE_URL).href
 }
 
 // Sitemap XML generated from ROUTES, so it stays in sync with your routes.

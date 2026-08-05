@@ -1,5 +1,7 @@
 # hobun: a Hono app, pre-rendered to static HTML, served on Cloudflare Pages
 
+**Live site:** <https://hobun-ssg.pages.dev>
+
 This is a static site, generated at build time. Every page starts life as a JSX component inside a [Hono](https://hono.dev) app and gets baked into a plain HTML file. When someone visits, Cloudflare Pages just serves files: no server-side code runs, there is zero client-side JavaScript, and the whole toolchain is Bun.
 
 The question this project asked: how much of the modern framework stack does a simple static site actually need? The answer I landed on: almost none. Not because this is the smartest way to build a static site (there are plenty of easier and more conventional ones), but because it's the path this project took. No Vite, no bundler, no npm: one runtime dependency (`hono`), a ~20-line build script, and Bun transpiling the TSX natively. This README explains the whole thing, including the parts that were wrong along the way.
@@ -43,7 +45,7 @@ hobun/
 │   ├── site.ts             # SITE_URL, ROUTES (sitemap source of truth), robots.txt/sitemap text
 │   ├── security.ts         # secureHeaders middleware + the CSP constant public/_headers mirrors
 │   ├── dev-livereload.ts   # dev-only /__dev/hash and /__dev/livereload.js
-│   ├── app.test.ts         # 16 tests, bun:test + app.request(), no extra deps
+│   ├── app.test.ts         # 17 tests, bun:test + app.request(), no extra deps
 │   ├── components/         # Layout (html shell, meta, nav, footer), Card
 │   ├── pages/              # Home, Features, HowItWorks, Stack, Notes, NotFound
 │   └── styles/             # global.css (inlined into every page) + shared.ts (hono/css)
@@ -59,7 +61,7 @@ hobun/
 bun install            # install dependencies (bun.lock is committed)
 bun run dev            # serve the app on :3000; server hot-reload + browser auto-refresh
 bun run build          # pre-render every route to static files in dist/
-bun test               # 16 tests against the app itself (bun:test, zero extra deps)
+bun test               # 17 tests against the app itself (bun:test, zero extra deps)
 bun run typecheck      # tsc --noEmit
 bun run preview        # serve dist/ with Pages semantics (wrangler pages dev dist)
 ```
@@ -139,7 +141,7 @@ One header is intentionally not in the sync set: `X-Robots-Tag`. It's crawler gu
 
 ## Tests
 
-`bun test` runs 16 tests against the app itself using `app.request()`; no test framework beyond `bun:test`, no supertest, nothing. The suite covers:
+`bun test` runs 17 tests against the app itself using `app.request()`; no test framework beyond `bun:test`, no supertest, nothing. The suite covers:
 
 - every route returns 200 with expected content, unknown paths return a styled 404;
 - HEAD behaves like GET without a body;

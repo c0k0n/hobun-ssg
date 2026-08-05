@@ -148,7 +148,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
               <nav aria-label="Primary">
                 <ul class={navList}>
                   {NAV.map((item) => (
-                    <li>
+                    <li key={item.href}>
                       <a
                         class={navLink}
                         href={item.href}
@@ -170,6 +170,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
               &copy; {year} hobun &middot; built with <a href="https://hono.dev">Hono</a> on{' '}
               <a href="https://bun.com/docs">Bun</a>, hosted on{' '}
               <a href="https://developers.cloudflare.com/pages/">Cloudflare Pages</a>
+              &middot; <a href="https://github.com/c0k0n/hobun-ssg">source on GitHub</a>
             </p>
           </footer>
         </body>

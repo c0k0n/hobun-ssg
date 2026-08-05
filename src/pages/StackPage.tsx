@@ -84,6 +84,13 @@ export function StackPage() {
             <span class={stackRole}>{tool.label} &rarr;</span>
           </a>
         ))}
+        <p class={note}>
+          Want every detail? The project lives in{' '}
+          <a href="https://github.com/c0k0n/hobun-ssg" target="_blank" rel="noreferrer">
+            this repository
+          </a>
+          , README, tests, and history included.
+        </p>
       </section>
     </Layout>
   )

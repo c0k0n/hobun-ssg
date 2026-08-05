@@ -73,7 +73,7 @@ export function FeaturesPage() {
           </Card>
           <Card title="Tests without a framework">
             <p>
-              16 tests using <code class={chip}>bun:test</code> and the app's own{' '}
+              17 tests using <code class={chip}>bun:test</code> and the app's own{' '}
               <code class={chip}>request()</code>; no supertest, no test doubles, no extra
               dependencies.
             </p>

@@ -13,6 +13,8 @@ const app = new Hono()
 
 app.use('*', securityHeaders, robotsTag)
 
+// The five pages mirror ROUTES in src/site.ts (the sitemap source of truth);
+// keep the two in sync. /404 stays out of ROUTES on purpose (it is noindex).
 app.get('/', (c) => {
   return c.html(<HomePage />)
 })
