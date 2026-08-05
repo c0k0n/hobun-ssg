@@ -20,7 +20,7 @@ const TOOLS = [
   {
     name: 'Hono on Bun',
     role: 'the guide this project effectively starts from',
-    desc: 'The official getting-started page shows a Hono app running on Bun — roughly the first four lines of this repository.',
+    desc: 'The official getting-started page shows a Hono app running on Bun, roughly the first four lines of this repository.',
     href: 'https://hono.dev/docs/getting-started/bun',
     label: 'hono.dev/docs/getting-started/bun',
   },
@@ -41,7 +41,7 @@ const TOOLS = [
   {
     name: 'Wrangler',
     role: 'the local stand-in for Pages',
-    desc: 'wrangler pages dev is the only tool that reproduces the Pages shape on a laptop — real 404s, headers applied, custom 404 page working.',
+    desc: 'wrangler pages dev is the only tool that reproduces the Pages shape on a laptop: real 404s, headers applied, custom 404 page working.',
     href: 'https://developers.cloudflare.com/workers/wrangler/',
     label: 'developers.cloudflare.com/workers/wrangler',
   },
@@ -50,8 +50,8 @@ const TOOLS = [
 export function StackPage() {
   return (
     <Layout
-      title="Stack — hobun"
-      description="Bun, Hono, and Cloudflare Pages — the tools this learning project is about, with links to their docs."
+      title="Stack | hobun"
+      description="Bun, Hono, and Cloudflare Pages, the tools this learning project is about, with links to their docs."
       active="stack"
       path="/stack"
     >
@@ -61,7 +61,7 @@ export function StackPage() {
           What I set out to <span class={grad}>learn</span>
         </h1>
         <p class={lead}>
-          Two tools and a host: Bun, Hono, and Cloudflare Pages. Nothing here is exotic — each one
+          Two tools and a host: Bun, Hono, and Cloudflare Pages. Nothing here is exotic; each one
           does the part it is best at. Click any row for its docs.
         </p>
         <p class={note}>

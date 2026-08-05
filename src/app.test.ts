@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import app from './index.tsx'
 import { ROUTES } from './site.ts'
 
-// Run with `bun test`. Uses Hono's app.request() and Bun's test runner —
+// Run with `bun test`. Uses Hono's app.request() and Bun's test runner;
 // no extra dependencies. bun test sets NODE_ENV=test, so the app is in
 // production shape: dev-only routes (/__dev/*) must not be registered.
 
@@ -34,7 +34,7 @@ describe('routes', () => {
   test('notes returns 200 with expected content', async () => {
     const res = await app.request('http://localhost/notes')
     expect(res.status).toBe(200)
-    expect(await res.text()).toContain('Learned the')
+    expect(await res.text()).toContain('went wrong')
   })
 
   test('/404 pre-renders the not-found page', async () => {

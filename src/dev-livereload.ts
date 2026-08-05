@@ -2,7 +2,7 @@ import type { Hono } from 'hono'
 import { Glob } from 'bun'
 
 // Dev-only live reload. `bun run --hot` re-executes the server on file
-// changes (that is all it promises — see bun.com/docs/runtime/watch-mode),
+// changes (that is all it promises; see bun.com/docs/runtime/watch-mode),
 // but nothing pushes that to the browser. This restores the Vite-era
 // auto-refresh with zero dependencies:
 //

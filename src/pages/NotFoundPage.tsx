@@ -5,7 +5,7 @@ import { btn, eyebrow, grad, hero, lead, notfoundTitle, title } from '../styles/
 export function NotFoundPage() {
   return (
     <Layout
-      title="Page not found — hobun"
+      title="Page not found | hobun"
       description="The page you are looking for does not exist."
       path="/404"
       robots="noindex, nofollow"
@@ -15,7 +15,7 @@ export function NotFoundPage() {
         <h1 class={cx(title, notfoundTitle)}>
           Page <span class={grad}>not found</span>
         </h1>
-        <p class={lead}>The page you&rsquo;re looking for doesn&rsquo;t exist — it may have moved.</p>
+        <p class={lead}>The page you&rsquo;re looking for doesn&rsquo;t exist. It may have moved.</p>
         <a class={btn} href="/">
           Return to the home page
         </a>

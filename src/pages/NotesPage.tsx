@@ -21,14 +21,14 @@ const NOTES = [
   },
   {
     title: 'CSS scoping isn\u2019t magic',
-    text: 'hono/css dedupes by class name at render time. A page only ships the styles of the components it actually rendered \u2014 which is why the 404 page has none of the home page\u2019s styles.',
+    text: 'hono/css dedupes by class name at render time. A page only ships the styles of the components it actually rendered, which is why the 404 page has none of the home page\u2019s styles.',
   },
 ]
 
 export function NotesPage() {
   return (
     <Layout
-      title="Notes — hobun"
+      title="Notes | hobun"
       description="The things this project taught, mostly by breaking: TypeScript 7, Bun imports, silent build hangs, Pages _headers, and hono/css."
       active="notes"
       path="/notes"
@@ -36,11 +36,11 @@ export function NotesPage() {
       <section class={cx(hero, 'container')}>
         <p class={eyebrow}>Notes</p>
         <h1 class={title}>
-          Learned the <span class={grad}>hard way</span>
+          What <span class={grad}>went wrong</span>
         </h1>
         <p class={lead}>
-          The interesting parts of this project are the mistakes. These are the ones worth writing
-          down.
+          Most of what this project taught came from things that broke. These notes are the parts
+          worth keeping.
         </p>
       </section>
       <section class={cx(section, 'container')} aria-label="Lessons learned">
@@ -51,6 +51,10 @@ export function NotesPage() {
           </article>
         ))}
         <p class={note}>None of this is groundbreaking. All of it was new to the person who built it.</p>
+        <p class={note}>
+          For context: this project was built with an AI assistant doing most of the research,
+          fetching docs and how-tos. These notes are what survived the build.
+        </p>
       </section>
     </Layout>
   )

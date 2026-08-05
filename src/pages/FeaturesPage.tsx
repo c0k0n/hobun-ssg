@@ -6,7 +6,7 @@ import { cards, chip, eyebrow, grad, hero, lead, section, sectionLead, sectionTi
 export function FeaturesPage() {
   return (
     <Layout
-      title="Features — hobun"
+      title="Features | hobun"
       description="Everything this site does on purpose: pure SSG, scoped CSS, strict security headers, layered 404s, and more."
       active="features"
       path="/features"
@@ -28,20 +28,20 @@ export function FeaturesPage() {
           <Card title="Pure static site generation">
             <p>
               <code class={chip}>toSSG</code> walks the registered routes at build time and writes one
-              real HTML file per route — <code class={chip}>/404</code> becomes{' '}
+              real HTML file per route. <code class={chip}>/404</code> becomes{' '}
               <code class={chip}>404.html</code>.
             </p>
           </Card>
           <Card title="Zero client-side JavaScript">
             <p>
-              No bundler, no hydration, no inline bootstrap script. The strict CSP isn't a compromise
-              — there is nothing to exempt.
+              No bundler, no hydration, no inline bootstrap script. The strict CSP isn't a compromise;
+              there is nothing to exempt.
             </p>
           </Card>
           <Card title="CSS scoped per page">
             <p>
               hono/css collects styles at render time and emits them inline, so each page ships only
-              what it uses. The 404 page has none of the home page's styles — that's checkable in
+              what it uses. The 404 page has none of the home page's styles; that's checkable in
               <code class={chip}>dist/404.html</code>.
             </p>
           </Card>
@@ -74,7 +74,7 @@ export function FeaturesPage() {
           <Card title="Tests without a framework">
             <p>
               16 tests using <code class={chip}>bun:test</code> and the app's own{' '}
-              <code class={chip}>request()</code> — no supertest, no test doubles, no extra
+              <code class={chip}>request()</code>; no supertest, no test doubles, no extra
               dependencies.
             </p>
           </Card>

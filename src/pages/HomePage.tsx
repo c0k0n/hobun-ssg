@@ -21,7 +21,7 @@ import {
 export function HomePage() {
   return (
     <Layout
-      title="hobun — learning Hono and Bun"
+      title="hobun | learning Hono and Bun"
       description="A learning project: Hono and Bun, pre-rendered to static HTML and served from Cloudflare Pages. The site is the write-up."
       active="home"
       path="/"
@@ -33,12 +33,12 @@ export function HomePage() {
         </h1>
         <p class={lead}>
           This is a learning project that doubles as its own write-up: a static site pre-rendered
-          from a Hono app and served from Cloudflare Pages, with the journey explained on the pages
+          from a Hono app and served from Cloudflare Pages, with each step explained on the pages
           themselves.
         </p>
         <p class={note}>
           There are simpler and more conventional ways to reach the same result. This is the path
-          this project took — the one that taught the most per line of configuration.
+          this project took, the one that taught the most per line of configuration.
         </p>
         <ul class={pipeline} aria-label="Build pipeline">
           <li>src/</li>
@@ -69,17 +69,17 @@ export function HomePage() {
           </Card>
           <Card title="The features are lessons">
             <p>
-              Scoped CSS, a strict CSP, layered 404s, crawler files as routes — each one something
+              Scoped CSS, a strict CSP, layered 404s, crawler files as routes, each one something
               the project had to figure out.
             </p>
             <a class={cardLink} href="/features">
               Features &rarr;
             </a>
           </Card>
-          <Card title="The mistakes, kept">
+          <Card title="What broke, written down">
             <p>
-              The notes page is the best part: silent build hangs, TypeScript 7 surprises, Pages'
-              _headers matching.
+              Silent build hangs, TypeScript 7 surprises, Pages' _headers matching. The notes page
+              has them all.
             </p>
             <a class={cardLink} href="/notes">
               Notes &rarr;
