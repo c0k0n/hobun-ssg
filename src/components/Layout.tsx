@@ -37,7 +37,14 @@ const headerInner = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
   padding-block: 14px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 12px;
+    padding-block: 12px;
+  }
 `
 
 const brand = css`
@@ -49,6 +56,8 @@ const brand = css`
 
 const navList = css`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 4px;
   padding: 0;
   list-style: none;
@@ -62,6 +71,11 @@ const navLink = css`
   font-size: 0.9rem;
   font-weight: 500;
   transition: color 0.15s ease, background 0.15s ease;
+
+  @media (max-width: 640px) {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
 
   &:hover {
     color: var(--text);
@@ -106,6 +120,10 @@ const footer = css`
 const footerText = css`
   color: var(--muted);
   font-size: 0.85rem;
+
+  @media (max-width: 640px) {
+    text-align: center;
+  }
 `
 
 export function Layout({ title, description, active, path, robots = ROBOTS_INDEX, children }: LayoutProps) {

@@ -2,10 +2,18 @@ import { css } from 'hono/css'
 
 export const hero = css`
   padding-block: 88px 56px;
+
+  @media (max-width: 640px) {
+    padding-block: 60px 40px;
+  }
 `
 
 export const heroHome = css`
   padding-block: 112px 64px;
+
+  @media (max-width: 640px) {
+    padding-block: 72px 44px;
+  }
 `
 
 export const eyebrow = css`
@@ -70,6 +78,16 @@ export const actions = css`
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 36px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    & a {
+      width: 100%;
+      text-align: center;
+    }
+  }
 `
 
 export const btn = css`
@@ -114,6 +132,10 @@ export const cards = css`
 
 export const section = css`
   padding-bottom: 80px;
+
+  @media (max-width: 640px) {
+    padding-bottom: 56px;
+  }
 `
 
 export const sectionTitle = css`
@@ -204,6 +226,10 @@ export const stackRow = css`
   border: 1px solid var(--border);
   border-radius: 12px;
   transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+
+  @media (max-width: 640px) {
+    padding: 18px 20px;
+  }
 
   &:hover {
     border-color: rgba(79, 70, 229, 0.4);

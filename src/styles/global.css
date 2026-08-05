@@ -14,6 +14,12 @@
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 }
 
+/* Stop iOS from auto-scaling text when the layout rotates or the user zooms. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -64,14 +70,27 @@ main:focus-visible {
   outline: none;
 }
 
-/* Remove the double-tap zoom delay on mobile taps (WCAG 2.5.8 / tap targets). */
+/* Remove the double-tap zoom delay on mobile taps (WCAG 2.5.8 / tap targets)
+   and the grey tap-flash on touch browsers. */
 a,
 button {
   touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover lifts and shadows are desktop cues; on touch they only flash after a
+   tap. Disable the transform/shadow transitions entirely on hover-less
+   devices so taps stay still. */
+@media (hover: none) {
+  a,
+  article {
+    transform: none !important;
+    box-shadow: none !important;
+  }
 }
 
 .container {
-  width: min(820px, 92vw);
+  width: min(820px, calc(100% - 32px));
   margin-inline: auto;
 }
 
