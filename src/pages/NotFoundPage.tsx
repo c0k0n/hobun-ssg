@@ -5,7 +5,7 @@ import { btn, eyebrow, grad, hero, notfoundTitle, title, lead } from '../styles/
 export function NotFoundPage() {
   return (
     <Layout
-      title="Page not found — clworkersvite"
+      title="Page not found — hobun"
       description="The page you are looking for does not exist."
       path="/404"
       robots="noindex, nofollow"

@@ -6,7 +6,7 @@ import { cards, eyebrow, hero, lead, title } from '../styles/shared'
 export function AboutPage() {
   return (
     <Layout
-      title="About — clworkersvite"
+      title="About — hobun"
       description="How this static site is built with Hono, Bun, and Cloudflare."
       active="about"
       path="/about"

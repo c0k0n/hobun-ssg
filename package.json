@@ -1,6 +1,9 @@
 {
-  "name": "clworkersvite",
+  "name": "hobun-ssg",
   "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development bun run --hot src/index.tsx",
     "build": "bun run scripts/build.ts",

@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "clworkersvite",
+      "name": "hobun-ssg",
       "dependencies": {
         "hono": "^4.13.0",
       },

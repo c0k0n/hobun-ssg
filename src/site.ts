@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://clworkersvite.pages.dev'
+export const SITE_URL = 'https://hobun-ssg.pages.dev'
 
 export const ROBOTS_INDEX = 'index, follow, max-image-preview:large'
 
@@ -10,7 +10,7 @@ export const isDev = process.env.NODE_ENV === 'development'
 // Served as /robots.txt in dev and pre-rendered to dist/robots.txt by toSSG.
 // Every page carries an explicit <meta name="robots"> and the 404 page is
 // marked noindex, so the sitemap is the single source of truth.
-export const ROBOTS_TXT = `# robots.txt for clworkersvite
+export const ROBOTS_TXT = `# robots.txt for hobun
 # Served by the Hono app and pre-rendered into dist/ at build time.
 
 # Allow all crawlers to read the entire site.

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import app from './index.tsx'
-import { ROUTES } from './site'
+import { ROUTES } from './site.ts'
 
 // Run with `bun test`. Uses Hono's app.request() and Bun's test runner —
 // no extra dependencies. bun test sets NODE_ENV=test, so the app is in
@@ -82,7 +82,7 @@ describe('crawler files', () => {
     expect(res.status).toBe(200)
     const body = await res.text()
     expect(body).toContain('User-agent: *')
-    expect(body).toContain('Sitemap: https://clworkersvite.pages.dev/sitemap.xml')
+    expect(body).toContain('Sitemap: https://hobun-ssg.pages.dev/sitemap.xml')
   })
 
   test('sitemap.xml lists every route with canonical URLs', async () => {
@@ -90,8 +90,8 @@ describe('crawler files', () => {
     expect(res.status).toBe(200)
     expect(res.headers.get('Content-Type')).toContain('application/xml')
     const xml = await res.text()
-    expect(xml).toContain('<loc>https://clworkersvite.pages.dev/</loc>')
-    expect(xml).toContain('<loc>https://clworkersvite.pages.dev/about</loc>')
+    expect(xml).toContain('<loc>https://hobun-ssg.pages.dev/</loc>')
+    expect(xml).toContain('<loc>https://hobun-ssg.pages.dev/about</loc>')
   })
 })
 

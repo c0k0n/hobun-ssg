@@ -36,5 +36,4 @@ lerna-debug.log*
 # local reference notes
 docs/buninfolinks.txt
 docs/honoinfolinks.txt
-docs/viteinfolinks.txt
 docs/securityheadersguide.md

@@ -6,7 +6,7 @@ import { btn, cards, eyebrow, grad, hero, lead, pipeline, title } from '../style
 export function HomePage() {
   return (
     <Layout
-      title="clworkersvite — Pure SSG"
+      title="hobun — Pure SSG"
       description="A static site pre-rendered from a Hono app and served on Cloudflare's edge."
       active="home"
       path="/"

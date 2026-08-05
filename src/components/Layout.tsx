@@ -2,7 +2,6 @@ import type { Child } from 'hono/jsx'
 import { html } from 'hono/html'
 import { css, cx, Style } from 'hono/css'
 import globalCss from '../styles/global.css' with { type: 'text' }
-import { grad } from '../styles/shared'
 import { isDev, ROBOTS_INDEX, canonicalUrl } from '../site'
 
 type LayoutProps = {
@@ -119,7 +118,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           <meta property="og:description" content={description} />
           <meta property="og:type" content="website" />
           <meta property="og:url" content={canonical} />
-          <meta property="og:site_name" content="clworkersvite" />
+          <meta property="og:site_name" content="hobun" />
           <link rel="icon" href="/favicon.ico" />
           <title>{title}</title>
           <style>{globalCss}</style>
@@ -133,9 +132,9 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           </a>
           <header class={header}>
             <div class={cx('container', headerInner)}>
-          <a class={brand} href="/" translate="no">
-            clworkers<span class={grad}>vite</span>
-          </a>
+              <a class={brand} href="/" translate="no">
+                hobun
+              </a>
               <nav aria-label="Primary">
                 <ul class={navList}>
                   <li>
@@ -157,7 +156,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           <main id="main" tabindex={-1}>{children}</main>
           <footer class={footer}>
             <p class={cx('container', footerText)}>
-              &copy; {year} clworkersvite &middot; <a href="https://hono.dev">Visit the Hono website</a>
+              &copy; {year} hobun &middot; <a href="https://hono.dev">Visit the Hono website</a>
             </p>
           </footer>
         </body>
