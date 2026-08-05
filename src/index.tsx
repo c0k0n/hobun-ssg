@@ -1,6 +1,9 @@
 import { Hono } from 'hono'
 import { HomePage } from './pages/HomePage'
-import { AboutPage } from './pages/AboutPage'
+import { FeaturesPage } from './pages/FeaturesPage'
+import { HowItWorksPage } from './pages/HowItWorksPage'
+import { StackPage } from './pages/StackPage'
+import { NotesPage } from './pages/NotesPage'
 import { NotFoundPage } from './pages/NotFoundPage'
 import { securityHeaders, robotsTag } from './security'
 import { isDev, ROBOTS_TXT, sitemapXml } from './site'
@@ -14,8 +17,20 @@ app.get('/', (c) => {
   return c.html(<HomePage />)
 })
 
-app.get('/about', (c) => {
-  return c.html(<AboutPage />)
+app.get('/features', (c) => {
+  return c.html(<FeaturesPage />)
+})
+
+app.get('/how-it-works', (c) => {
+  return c.html(<HowItWorksPage />)
+})
+
+app.get('/stack', (c) => {
+  return c.html(<StackPage />)
+})
+
+app.get('/notes', (c) => {
+  return c.html(<NotesPage />)
 })
 
 app.get('/404', (c) => {

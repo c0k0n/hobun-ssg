@@ -1,6 +1,6 @@
 import { cx } from 'hono/css'
 import { Layout } from '../components/Layout'
-import { btn, eyebrow, grad, hero, notfoundTitle, title, lead } from '../styles/shared'
+import { btn, eyebrow, grad, hero, lead, notfoundTitle, title } from '../styles/shared'
 
 export function NotFoundPage() {
   return (

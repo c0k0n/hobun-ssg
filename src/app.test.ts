@@ -10,13 +10,31 @@ describe('routes', () => {
   test('home returns 200 with expected content', async () => {
     const res = await app.request('http://localhost/')
     expect(res.status).toBe(200)
-    expect(await res.text()).toContain('pre-rendered to')
+    expect(await res.text()).toContain('wanted to learn')
   })
 
-  test('about returns 200', async () => {
-    const res = await app.request('http://localhost/about')
+  test('features returns 200 with expected content', async () => {
+    const res = await app.request('http://localhost/features')
     expect(res.status).toBe(200)
-    expect(await res.text()).toContain('Built on three layers')
+    expect(await res.text()).toContain('Nothing here by')
+  })
+
+  test('how-it-works returns 200 with expected content', async () => {
+    const res = await app.request('http://localhost/how-it-works')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toContain('One app,')
+  })
+
+  test('stack returns 200 with expected content', async () => {
+    const res = await app.request('http://localhost/stack')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toContain('set out to')
+  })
+
+  test('notes returns 200 with expected content', async () => {
+    const res = await app.request('http://localhost/notes')
+    expect(res.status).toBe(200)
+    expect(await res.text()).toContain('Learned the')
   })
 
   test('/404 pre-renders the not-found page', async () => {
@@ -91,7 +109,8 @@ describe('crawler files', () => {
     expect(res.headers.get('Content-Type')).toContain('application/xml')
     const xml = await res.text()
     expect(xml).toContain('<loc>https://hobun-ssg.pages.dev/</loc>')
-    expect(xml).toContain('<loc>https://hobun-ssg.pages.dev/about</loc>')
+    expect(xml).toContain('<loc>https://hobun-ssg.pages.dev/features</loc>')
+    expect(xml).toContain('<loc>https://hobun-ssg.pages.dev/notes</loc>')
   })
 })
 

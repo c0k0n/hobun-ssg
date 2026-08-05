@@ -4,22 +4,32 @@ import { css, cx, Style } from 'hono/css'
 import globalCss from '../styles/global.css' with { type: 'text' }
 import { isDev, ROBOTS_INDEX, canonicalUrl } from '../site'
 
+type PageKey = 'home' | 'features' | 'how-it-works' | 'stack' | 'notes'
+
 type LayoutProps = {
   title: string
   description: string
-  active?: 'home' | 'about'
+  active?: PageKey
   path: string
   robots?: string
   children: Child
 }
 
+const NAV: { key: PageKey; label: string; href: string }[] = [
+  { key: 'home', label: 'Home', href: '/' },
+  { key: 'features', label: 'Features', href: '/features' },
+  { key: 'how-it-works', label: 'How it works', href: '/how-it-works' },
+  { key: 'stack', label: 'Stack', href: '/stack' },
+  { key: 'notes', label: 'Notes', href: '/notes' },
+]
+
 const header = css`
   position: sticky;
   top: 0;
   backdrop-filter: blur(12px);
-  background: rgba(13, 14, 18, 0.78);
+  background: rgba(255, 255, 255, 0.85);
   border-bottom: 1px solid var(--border);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
   z-index: 10;
 `
 
@@ -27,7 +37,7 @@ const headerInner = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 16px;
+  padding-block: 14px;
 `
 
 const brand = css`
@@ -55,7 +65,7 @@ const navLink = css`
 
   &:hover {
     color: var(--text);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface-2);
   }
 
   &[aria-current='page'] {
@@ -108,7 +118,7 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta name="theme-color" content="#0d0e12" />
+          <meta name="theme-color" content="#ffffff" />
           <meta name="description" content={description} />
           <meta name="robots" content={robots} />
           <link rel="canonical" href={canonical} />
@@ -137,16 +147,17 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
               </a>
               <nav aria-label="Primary">
                 <ul class={navList}>
-                  <li>
-                    <a class={navLink} href="/" aria-current={active === 'home' ? 'page' : undefined}>
-                      Home
-                    </a>
-                  </li>
-                  <li>
-                    <a class={navLink} href="/about" aria-current={active === 'about' ? 'page' : undefined}>
-                      About
-                    </a>
-                  </li>
+                  {NAV.map((item) => (
+                    <li>
+                      <a
+                        class={navLink}
+                        href={item.href}
+                        aria-current={active === item.key ? 'page' : undefined}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </nav>
             </div>
@@ -156,7 +167,9 @@ export function Layout({ title, description, active, path, robots = ROBOTS_INDEX
           <main id="main" tabindex={-1}>{children}</main>
           <footer class={footer}>
             <p class={cx('container', footerText)}>
-              &copy; {year} hobun &middot; <a href="https://hono.dev">Visit the Hono website</a>
+              &copy; {year} hobun &middot; built with <a href="https://hono.dev">Hono</a> on{' '}
+              <a href="https://bun.com/docs">Bun</a>, hosted on{' '}
+              <a href="https://developers.cloudflare.com/pages/">Cloudflare Pages</a>
             </p>
           </footer>
         </body>

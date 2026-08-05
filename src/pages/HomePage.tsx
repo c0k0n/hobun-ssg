@@ -1,42 +1,91 @@
 import { cx } from 'hono/css'
 import { Layout } from '../components/Layout'
 import { Card } from '../components/Card'
-import { btn, cards, eyebrow, grad, hero, lead, pipeline, title } from '../styles/shared'
+import {
+  actions,
+  btn,
+  btnGhost,
+  cardLink,
+  cards,
+  eyebrow,
+  grad,
+  heroHome,
+  lead,
+  note,
+  pipeline,
+  section,
+  sectionTitle,
+  title,
+} from '../styles/shared'
 
 export function HomePage() {
   return (
     <Layout
-      title="hobun — Pure SSG"
-      description="A static site pre-rendered from a Hono app and served on Cloudflare's edge."
+      title="hobun — learning Hono and Bun"
+      description="A learning project: Hono and Bun, pre-rendered to static HTML and served from Cloudflare Pages. The site is the write-up."
       active="home"
       path="/"
     >
-      <section class={cx(hero, 'container')}>
-        <p class={eyebrow}>Static Site Generation</p>
+      <section class={cx(heroHome, 'container')}>
+        <p class={eyebrow}>Learning Hono &amp; Bun</p>
         <h1 class={title}>
-          Hello! This page was pre-rendered to <span class={grad}>static HTML</span> at build time.
+          I wanted to learn <span class={grad}>Hono and Bun</span>. So I built this site with them.
         </h1>
-        <p class={lead}>No server-side code runs when you visit — just files on Cloudflare's edge, planetwide.</p>
+        <p class={lead}>
+          This is a learning project that doubles as its own write-up: a static site pre-rendered
+          from a Hono app and served from Cloudflare Pages, with the journey explained on the pages
+          themselves.
+        </p>
+        <p class={note}>
+          There are simpler and more conventional ways to reach the same result. This is the path
+          this project took — the one that taught the most per line of configuration.
+        </p>
         <ul class={pipeline} aria-label="Build pipeline">
           <li>src/</li>
+          <li>toSSG</li>
           <li>dist/</li>
           <li>edge</li>
         </ul>
-        <a class={btn} href="/about">
-          Read how this site is built
-        </a>
+        <div class={actions}>
+          <a class={btn} href="/features">
+            What I learned
+          </a>
+          <a class={btnGhost} href="/how-it-works">
+            How it works
+          </a>
+        </div>
       </section>
-      <section class={cx(cards, 'container')} aria-label="Highlights">
-        <Card title="Hono renders">
-          <p>
-            <code>toSSG</code> walks your routes at build time and writes one real HTML file per page.
-          </p>
-        </Card>
-        <Card title="CSS scoped">
-          <p>
-            Styles are scoped per page with <code>hono/css</code> and only included where they are used.
-          </p>
-        </Card>
+      <section class={cx(section, 'container')} aria-label="What you will find here">
+        <h2 class={sectionTitle}>What you'll find here</h2>
+        <div class={cards}>
+          <Card title="The tools I set out to learn">
+            <p>
+              Bun and Hono, used for real: routing, rendering, building, testing, deploying. Nothing
+              else in the pipeline.
+            </p>
+            <a class={cardLink} href="/stack">
+              The stack &rarr;
+            </a>
+          </Card>
+          <Card title="The features are lessons">
+            <p>
+              Scoped CSS, a strict CSP, layered 404s, crawler files as routes — each one something
+              the project had to figure out.
+            </p>
+            <a class={cardLink} href="/features">
+              Features &rarr;
+            </a>
+          </Card>
+          <Card title="The mistakes, kept">
+            <p>
+              The notes page is the best part: silent build hangs, TypeScript 7 surprises, Pages'
+              _headers matching.
+            </p>
+            <a class={cardLink} href="/notes">
+              Notes &rarr;
+            </a>
+          </Card>
+        </div>
       </section>
     </Layout>
   )

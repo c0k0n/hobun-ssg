@@ -2,7 +2,9 @@
 
 This is a static site that is generated, not handwritten. Every page starts life as a JSX component inside a [Hono](https://hono.dev) app, and gets baked into a plain HTML file at build time. When someone visits, Cloudflare Pages just serves files — no server-side code runs, there is zero client-side JavaScript, and the whole toolchain is Bun.
 
-The question this project answers: how much of the modern framework stack does a simple static site actually need? The answer turned out to be: almost none. No Vite, no bundler, no npm — one runtime dependency (`hono`), a ~20-line build script, and Bun transpiling the TSX natively. This README tries to explain the whole thing accurately, including the parts that were wrong along the way.
+The question this project asked: how much of the modern framework stack does a simple static site actually need? The answer I landed on: almost none. Not because this is the smartest way to build a static site — there are plenty of easier and more conventional ones — but because it's the path this project took. No Vite, no bundler, no npm — one runtime dependency (`hono`), a ~20-line build script, and Bun transpiling the TSX natively. This README tries to explain the whole thing accurately, including the parts that were wrong along the way.
+
+Why this repository exists: I was curious about Hono and Bun — how far two tools can go when they get a simple job and nothing else to lean on. This is a learning project, and the site is the write-up: every page doubles as a note about the tool that produced it. If you're learning the same two tools, the page order roughly matches the order the lessons happened in.
 
 ## The stack
 
@@ -37,13 +39,13 @@ The same app is used three different ways, and that's deliberate:
 ```
 hobun/
 ├── src/
-│   ├── index.tsx           # the entire router: 3 pages + robots.txt + sitemap.xml + notFound
+│   ├── index.tsx           # the entire router: 5 pages + robots.txt + sitemap.xml + notFound
 │   ├── site.ts             # SITE_URL, ROUTES (sitemap source of truth), robots.txt/sitemap text
 │   ├── security.ts         # secureHeaders middleware + the CSP constant public/_headers mirrors
 │   ├── dev-livereload.ts   # dev-only /__dev/hash and /__dev/livereload.js
-│   ├── app.test.ts         # 13 tests, bun:test + app.request(), no extra deps
+│   ├── app.test.ts         # 16 tests, bun:test + app.request(), no extra deps
 │   ├── components/         # Layout (html shell, meta, nav, footer), Card
-│   ├── pages/              # HomePage, AboutPage, NotFoundPage
+│   ├── pages/              # Home, Features, HowItWorks, Stack, Notes, NotFound
 │   └── styles/             # global.css (inlined into every page) + shared.ts (hono/css)
 ├── scripts/build.ts        # the whole build system: toSSG, then copy public/ into dist/
 ├── public/                 # favicon.ico + _headers — everything else is generated
@@ -57,7 +59,7 @@ hobun/
 bun install            # install dependencies (bun.lock is committed)
 bun run dev            # serve the app on :3000 — server hot-reload + browser auto-refresh
 bun run build          # pre-render every route to static files in dist/
-bun test               # 13 tests against the app itself (bun:test, zero extra deps)
+bun test               # 16 tests against the app itself (bun:test, zero extra deps)
 bun run typecheck      # tsc --noEmit
 bun run preview        # serve dist/ with Pages semantics (wrangler pages dev dist)
 ```
@@ -83,15 +85,18 @@ Bun transpiles the TSX at runtime, so there is no compile step and no bundler in
 ```
 dist/
 ├── 404.html
-├── about.html
 ├── index.html
+├── features.html
+├── how-it-works.html
+├── stack.html
+├── notes.html
 ├── robots.txt
 ├── sitemap.xml
 ├── favicon.ico
 └── _headers
 ```
 
-The CSS story is the most satisfying part. `hono/css` gives every component a stable class name and dedupes styles at render time, so each page ships only the CSS it actually used. It's checkable in the build output: `dist/404.html` contains a strict subset of the class names in `dist/index.html` — the 404 page doesn't import the card grid styles, and they're absent from its HTML. True globals (the `:root` variables, reset, `body`, focus styles, `prefers-reduced-motion`) live in `src/styles/global.css` and get inlined into every page. Total runtime cost of styling: zero requests.
+The CSS part is worth understanding. `hono/css` gives every component a stable class name and dedupes styles at render time, so each page ships only the CSS it actually used. It's checkable in the build output: `dist/404.html` contains a strict subset of the class names in `dist/index.html` — the 404 page doesn't import the card grid styles, and they're absent from its HTML. True globals (the `:root` variables, reset, `body`, focus styles, `prefers-reduced-motion`) live in `src/styles/global.css` and get inlined into every page. Total runtime cost of styling: zero requests.
 
 ## Preview: what Pages will actually do
 
@@ -113,7 +118,7 @@ Both files are real routes (`/robots.txt`, `/sitemap.xml` in `src/index.tsx`), n
 - Dev serves them exactly like production would — no "works in prod, broken in dev" surprises.
 - `toSSG` pre-renders both into `dist/` on every build, so the deployed copies can't go stale.
 
-The sitemap is generated from the `ROUTES` array in `src/site.ts` — that's the single source of truth, not the router. Each entry carries `lastmod` (build date), `changefreq`, `priority`, and `xhtml:link` hreflang alternates (en + x-default), all built from `SITE_URL`. The 404 page is deliberately not in `ROUTES` — it's marked noindex, so listing it in a sitemap would be nonsense.
+The sitemap is generated from the `ROUTES` array in `src/site.ts` — that's the single source of truth, not the router. Each entry carries `lastmod` (build date), `changefreq`, `priority`, and `xhtml:link` hreflang alternates (en + x-default), all built from `SITE_URL`. The current routes: `/`, `/features`, `/how-it-works`, `/stack`, `/notes`. The 404 page is deliberately not in `ROUTES` — it's marked noindex, so listing it in a sitemap would be nonsense.
 
 ## SEO and accessibility, the checklist
 
@@ -134,7 +139,7 @@ One header is intentionally not in the sync set: `X-Robots-Tag`. It's crawler gu
 
 ## Tests
 
-`bun test` runs 13 tests against the app itself using `app.request()` — no test framework beyond `bun:test`, no supertest, nothing. The suite covers:
+`bun test` runs 16 tests against the app itself using `app.request()` — no test framework beyond `bun:test`, no supertest, nothing. The suite covers:
 
 - every route returns 200 with expected content, unknown paths return a styled 404;
 - HEAD behaves like GET without a body;
@@ -149,13 +154,13 @@ One header is intentionally not in the sync set: `X-Robots-Tag`. It's crawler gu
 Three steps, two of which people forget:
 
 ```tsx
-// 1. src/pages/AboutPage.tsx
+// 1. src/pages/LearnPage.tsx
 import { Layout } from '../components/Layout'
 
-export function AboutPage() {
+export function LearnPage() {
   return (
-    <Layout title="About" description="..." active="about" path="/about">
-      <h1>About</h1>
+    <Layout title="Learn" description="..." path="/learn">
+      <h1>Learn</h1>
     </Layout>
   )
 }
@@ -163,17 +168,17 @@ export function AboutPage() {
 
 ```tsx
 // 2. src/index.tsx
-app.get('/about', (c) => {
-  return c.html(<AboutPage />)
+app.get('/learn', (c) => {
+  return c.html(<LearnPage />)
 })
 ```
 
 ```ts
 // 3. src/site.ts — add it to ROUTES or it won't appear in the sitemap
-{ path: '/about', changefreq: 'monthly', priority: '0.8' },
+{ path: '/learn', changefreq: 'monthly', priority: '0.7' },
 ```
 
-`path` is a required prop on `Layout` — it builds the canonical and hreflang URLs, so an `About` page missing it would fail typecheck. For dynamic routes use `ssgParams` (Next.js-style `generateStaticParams`), and for routes you never want pre-rendered, `disableSSG` (both current APIs, per [Hono's SSG docs](https://hono.dev/docs/helpers/ssg)).
+`path` is a required prop on `Layout` — it builds the canonical and hreflang URLs, so a page missing it would fail typecheck. `active` is optional; if you want the nav to highlight, add the page's key to the `PageKey` union in `Layout`. For dynamic routes use `ssgParams` (Next.js-style `generateStaticParams`), and for routes you never want pre-rendered, `disableSSG` (both current APIs, per [Hono's SSG docs](https://hono.dev/docs/helpers/ssg)).
 
 ## What was removed, and why
 

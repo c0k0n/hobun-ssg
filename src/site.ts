@@ -41,7 +41,10 @@ export type SiteRoute = {
 
 export const ROUTES: SiteRoute[] = [
   { path: '/', changefreq: 'monthly', priority: '1.0' },
-  { path: '/about', changefreq: 'monthly', priority: '0.8' },
+  { path: '/features', changefreq: 'monthly', priority: '0.9' },
+  { path: '/how-it-works', changefreq: 'monthly', priority: '0.8' },
+  { path: '/stack', changefreq: 'monthly', priority: '0.8' },
+  { path: '/notes', changefreq: 'monthly', priority: '0.7' },
 ]
 
 export function canonicalUrl(path: string): string {

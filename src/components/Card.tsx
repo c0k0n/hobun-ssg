@@ -10,9 +10,8 @@ const card = css`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 26px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  padding: 24px;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
   & p {
     color: var(--muted);
@@ -24,16 +23,16 @@ const card = css`
   }
 
   &:hover {
-    border-color: rgba(216, 178, 106, 0.35);
-    background: var(--surface-2);
+    border-color: rgba(79, 70, 229, 0.4);
     transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(16, 24, 40, 0.07);
   }
 `
 
 const cardTitle = css`
-  font-size: 1.02rem;
+  font-size: 1rem;
   letter-spacing: -0.01em;
-  font-weight: 600;
+  font-weight: 650;
   margin-bottom: 10px;
 `
 

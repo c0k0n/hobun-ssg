@@ -1,15 +1,15 @@
 :root {
-  color-scheme: dark;
-  --bg: #0d0e12;
-  --surface: #14161c;
-  --surface-2: #1a1d25;
-  --text: #e8e6e1;
-  --muted: #9aa0ab;
-  --border: #252a33;
-  --accent: #d8b26a;
-  --accent-2: #ecd3a0;
-  --on-accent: #1a150c;
-  --radius: 12px;
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f7f7f8;
+  --text: #18181b;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #4f46e5;
+  --accent-2: #818cf8;
+  --on-accent: #ffffff;
+  --radius: 10px;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 }
@@ -20,10 +20,7 @@
 }
 
 body {
-  background:
-    radial-gradient(1000px 480px at 88% -12%, rgba(216, 178, 106, 0.07), transparent 60%),
-    radial-gradient(760px 400px at -10% 0%, rgba(255, 255, 255, 0.028), transparent 55%),
-    var(--bg);
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 16px;
@@ -43,7 +40,7 @@ a {
 /* Inline links inside text blocks need a non-color cue (axe: link-in-text-block) */
 p a {
   text-decoration: underline;
-  text-decoration-color: rgba(216, 178, 106, 0.4);
+  text-decoration-color: rgba(79, 70, 229, 0.35);
   text-underline-offset: 3px;
   transition: text-decoration-color 0.15s ease;
 }
@@ -53,7 +50,7 @@ p a:hover {
 }
 
 ::selection {
-  background: rgba(216, 178, 106, 0.28);
+  background: rgba(79, 70, 229, 0.16);
 }
 
 :focus-visible {
@@ -74,7 +71,7 @@ button {
 }
 
 .container {
-  width: min(760px, 92vw);
+  width: min(820px, 92vw);
   margin-inline: auto;
 }
 

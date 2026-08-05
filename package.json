@@ -1,5 +1,6 @@
 {
   "name": "hobun-ssg",
+  "description": "Learning Hono and Bun by building a static site on Cloudflare Pages",
   "type": "module",
   "version": "1.0.0",
   "private": true,
