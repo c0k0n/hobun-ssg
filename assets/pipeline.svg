@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 196" width="720" height="196" role="img" aria-label="Build pipeline: TSX source is pre-rendered by toSSG into dist, then served from the Cloudflare edge">
+  <style>
+    .bg { fill: #fbfbfc }
+    .card { fill: #ffffff; stroke: #e4e4e7 }
+    .t { font: 600 14px ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; fill: #18181b }
+    .s { font: 500 11px ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; fill: #6b7280 }
+    .cap { font: 500 11px ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; fill: #a1a1aa }
+    .wire { stroke: #c7d2fe; stroke-width: 2; fill: none }
+    .arrow { fill: #a5b4fc }
+    .dot { fill: #4f46e5 }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #141418 }
+      .card { fill: #1d1d23; stroke: #3a3a44 }
+      .t { fill: #f4f4f5 }
+      .s { fill: #a1a1aa }
+      .cap { fill: #71717a }
+      .wire { stroke: #4338ca }
+      .arrow { fill: #6366f1 }
+      .dot { fill: #818cf8 }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="720" height="196" rx="14"/>
+  <text class="cap" x="27" y="30">build pipeline · bun run build</text>
+
+  <!-- stage 1 -->
+  <rect class="card" x="27" y="70" width="132" height="58" rx="10"/>
+  <text class="t" x="93" y="95" text-anchor="middle">src/</text>
+  <text class="s" x="93" y="113" text-anchor="middle">TSX components</text>
+
+  <!-- stage 2 -->
+  <rect class="card" x="205" y="70" width="132" height="58" rx="10"/>
+  <text class="t" x="271" y="95" text-anchor="middle">toSSG</text>
+  <text class="s" x="271" y="113" text-anchor="middle">hono/bun</text>
+
+  <!-- stage 3 -->
+  <rect class="card" x="383" y="70" width="132" height="58" rx="10"/>
+  <text class="t" x="449" y="95" text-anchor="middle">dist/</text>
+  <text class="s" x="449" y="113" text-anchor="middle">10 static files</text>
+
+  <!-- stage 4 -->
+  <rect class="card" x="561" y="70" width="132" height="58" rx="10"/>
+  <text class="t" x="627" y="95" text-anchor="middle">edge</text>
+  <text class="s" x="627" y="113" text-anchor="middle">Cloudflare Pages</text>
+
+  <!-- wires -->
+  <path class="wire" d="M159 99 H196"/>
+  <path class="wire" d="M337 99 H374"/>
+  <path class="wire" d="M515 99 H552"/>
+  <path class="arrow" d="M196 99 l-6 -4 v8 z"/>
+  <path class="arrow" d="M374 99 l-6 -4 v8 z"/>
+  <path class="arrow" d="M552 99 l-6 -4 v8 z"/>
+
+  <!-- travelling packets -->
+  <circle class="dot" r="3.5" cy="99" cx="159">
+    <animate attributeName="cx" values="159;196" dur="1.6s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+  <circle class="dot" r="3.5" cy="99" cx="337">
+    <animate attributeName="cx" values="337;374" dur="1.6s" begin="0.53s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="1.6s" begin="0.53s" repeatCount="indefinite"/>
+  </circle>
+  <circle class="dot" r="3.5" cy="99" cx="515">
+    <animate attributeName="cx" values="515;552" dur="1.6s" begin="1.06s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="1.6s" begin="1.06s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- stage labels -->
+  <text class="cap" x="93" y="152" text-anchor="middle">1 · author</text>
+  <text class="cap" x="271" y="152" text-anchor="middle">2 · pre-render</text>
+  <text class="cap" x="449" y="152" text-anchor="middle">3 · output</text>
+  <text class="cap" x="627" y="152" text-anchor="middle">4 · serve</text>
+
+  <text class="cap" x="27" y="180">no bundler · no compile step · no client-side JavaScript</text>
+</svg>

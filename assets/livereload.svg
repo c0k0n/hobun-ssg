@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 196" width="720" height="196" role="img" aria-label="Dev live reload loop: the browser polls a hash endpoint every 400 ms and reloads when the source hash changes">
+  <style>
+    .bg { fill: #fbfbfc }
+    .card { fill: #ffffff; stroke: #e4e4e7 }
+    .t { font: 600 14px ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; fill: #18181b }
+    .s { font: 500 11px ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; fill: #6b7280 }
+    .cap { font: 500 11px ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; fill: #a1a1aa }
+    .rail { stroke: #d4d4d8; stroke-width: 1.5; fill: none; stroke-dasharray: 4 5 }
+    .arrow { fill: #a5b4fc }
+    .req { fill: #4f46e5 }
+    .res { fill: #818cf8 }
+    .spin { stroke: #4f46e5; stroke-width: 2.5; fill: none; stroke-linecap: round }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #141418 }
+      .card { fill: #1d1d23; stroke: #3a3a44 }
+      .t { fill: #f4f4f5 }
+      .s { fill: #a1a1aa }
+      .cap { fill: #71717a }
+      .rail { stroke: #4b4b57 }
+      .arrow { fill: #6366f1 }
+      .req { fill: #818cf8 }
+      .res { fill: #6366f1 }
+      .spin { stroke: #818cf8 }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="720" height="196" rx="14"/>
+  <text class="cap" x="27" y="30">dev loop · bun run dev · dev-only, never in dist/</text>
+
+  <!-- browser -->
+  <rect class="card" x="27" y="70" width="150" height="58" rx="10"/>
+  <text class="t" x="102" y="95" text-anchor="middle">browser</text>
+  <text class="s" x="102" y="113" text-anchor="middle">livereload.js</text>
+  <g transform="translate(60 60)">
+    <path class="spin" d="M0 -9 A9 9 0 1 1 -8 4">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="2.4s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- server -->
+  <rect class="card" x="543" y="70" width="150" height="58" rx="10"/>
+  <text class="t" x="618" y="95" text-anchor="middle">bun --hot</text>
+  <text class="s" x="618" y="113" text-anchor="middle">/__dev/hash</text>
+
+  <!-- rails -->
+  <path class="rail" d="M190 90 H527"/>
+  <path class="rail" d="M527 116 H190"/>
+  <path class="arrow" d="M527 90 l-7 -4 v8 z"/>
+  <path class="arrow" d="M190 116 l7 -4 v8 z"/>
+
+  <text class="cap" x="358" y="82" text-anchor="middle">poll every 400 ms</text>
+  <text class="cap" x="358" y="132" text-anchor="middle">hash · sum of src/ mtimes</text>
+
+  <!-- request packet: left to right -->
+  <circle class="req" r="4" cy="90" cx="190">
+    <animate attributeName="cx" values="190;527" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <!-- response packet: right to left -->
+  <circle class="res" r="4" cy="116" cx="527">
+    <animate attributeName="cx" values="527;190" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="2s" begin="0.9s" repeatCount="indefinite"/>
+  </circle>
+
+  <text class="cap" x="27" y="168">save a file → mtime sum changes → next poll differs → location.reload()</text>
+  <text class="cap" x="27" y="186">routes registered only when NODE_ENV=development · a test asserts 404 outside dev</text>
+</svg>

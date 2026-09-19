@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 176" width="720" height="176" role="img" aria-label="Every response is hardened by two header sources: public/_headers for Pages static files and src/security.ts for app-generated responses">
+  <style>
+    .bg { fill: #fbfbfc }
+    .card { fill: #ffffff; stroke: #e4e4e7 }
+    .t { font: 600 13px ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; fill: #18181b }
+    .s { font: 500 11px ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; fill: #6b7280 }
+    .cap { font: 500 11px ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace; fill: #a1a1aa }
+    .wire { stroke: #c7d2fe; stroke-width: 2; fill: none }
+    .arrow { fill: #a5b4fc }
+    .dot { fill: #4f46e5 }
+    .ring { stroke: #4f46e5; stroke-width: 2; fill: none; opacity: 0.55 }
+    .shield { fill: none; stroke: #4f46e5; stroke-width: 2; stroke-linejoin: round }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #141418 }
+      .card { fill: #1d1d23; stroke: #3a3a44 }
+      .t { fill: #f4f4f5 }
+      .s { fill: #a1a1aa }
+      .cap { fill: #71717a }
+      .wire { stroke: #4338ca }
+      .arrow { fill: #6366f1 }
+      .dot { fill: #818cf8 }
+      .ring { stroke: #818cf8 }
+      .shield { stroke: #818cf8 }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="720" height="176" rx="14"/>
+  <text class="cap" x="27" y="28">response hardening · one contract, two emitters</text>
+
+  <rect class="card" x="27" y="58" width="132" height="56" rx="10"/>
+  <text class="t" x="93" y="82" text-anchor="middle">request</text>
+  <text class="s" x="93" y="100" text-anchor="middle">any path</text>
+
+  <!-- policy box with pulsing shield -->
+  <rect class="card" x="294" y="52" width="132" height="68" rx="10"/>
+  <g transform="translate(322 62)">
+    <path class="shield" d="M12 0 L23 5 V17 C23 27 12 33 12 33 C12 33 1 27 1 17 V5 Z"/>
+  </g>
+  <circle class="ring" cx="334" cy="80" r="26">
+    <animate attributeName="r" values="22;34;22" dur="2.6s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0;0.5" dur="2.6s" repeatCount="indefinite"/>
+  </circle>
+  <text class="t" x="360" y="104" text-anchor="middle">11 headers</text>
+  <text class="s" x="360" y="118" text-anchor="middle">CSP · HSTS · isolation</text>
+
+  <rect class="card" x="561" y="58" width="132" height="56" rx="10"/>
+  <text class="t" x="627" y="82" text-anchor="middle">response</text>
+  <text class="s" x="627" y="100" text-anchor="middle">hardened</text>
+
+  <path class="wire" d="M159 86 H285"/>
+  <path class="wire" d="M435 86 H552"/>
+  <path class="arrow" d="M285 86 l-6 -4 v8 z"/>
+  <path class="arrow" d="M552 86 l-6 -4 v8 z"/>
+
+  <circle class="dot" r="3.5" cy="86" cx="159">
+    <animate attributeName="cx" values="159;285" dur="1.8s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle class="dot" r="3.5" cy="86" cx="435">
+    <animate attributeName="cx" values="435;552" dur="1.8s" begin="0.9s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0;1;1;0" dur="1.8s" begin="0.9s" repeatCount="indefinite"/>
+  </circle>
+
+  <text class="cap" x="27" y="146">public/_headers → Pages static files · src/security.ts → dev and 404 responses</text>
+  <text class="cap" x="27" y="163">a test diffs the two on every run, so they cannot drift apart</text>
+</svg>
