@@ -33,6 +33,9 @@ lerna-debug.log*
 # misc
 .DS_Store
 
+# local agent workspace (never commit)
+.workbuddy-ai/
+
 # local reference notes
 docs/buninfolinks.txt
 docs/honoinfolinks.txt
