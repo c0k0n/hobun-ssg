@@ -177,7 +177,7 @@ app.get('/learn', (c) => c.html(<LearnPage />))
 { path: '/learn', changefreq: 'monthly', priority: '0.7' },
 ```
 
-`path` is required on `Layout`: it builds the canonical and hreflang URLs, so a page without it fails typecheck. `active` is optional — add the page's key to the `PageKey` union in `Layout` to light up the nav. For dynamic routes use `ssgParams`; for routes that must never be pre-rendered, `disableSSG`.
+`path` is required on `Layout` (`src/components/Layout.tsx`): it builds the canonical and hreflang URLs, so a page without it fails typecheck. `active` is optional — add the page's key to the `PageKey` union in that file to light up the nav and make the page appear in `NAV`. `robots` overrides the default index/noindex directive, which is how a route opts out of the sitemap.
 
 ## Gotchas
 

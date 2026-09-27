@@ -22,7 +22,7 @@
       .res { fill: #6366f1 }
       .spin { stroke: #818cf8 }
     }
-  </style>
+  @media (prefers-reduced-motion: reduce){*{animation:none!important}}</style>
 
   <rect class="bg" x="0" y="0" width="720" height="196" rx="14"/>
   <text class="cap" x="27" y="30">dev loop · bun run dev · dev-only, never in dist/</text>
